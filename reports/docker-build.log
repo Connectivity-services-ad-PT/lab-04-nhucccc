@@ -1,0 +1,83 @@
+﻿docker : #0 building with "desktop-linux" instance using docker driver
+At line:1 char:1
++ docker build -t fit4110/iot-ingestion:lab04 . 2>&1 | Out-File -FilePa ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (#0 building wit...g docker driver:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.12kB 0.0s done
+#1 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1.7
+#2 DONE 1.4s
+
+#3 docker-image://docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fb
+fdf2d83dda33e
+#3 resolve 
+docker.io/docker/dockerfile:1.7@sha256:a57df69d0ea827fb7266491f2813635de6f17269be881f696fbfdf2d83dda33e 
+0.0s done
+#3 CACHED
+
+#4 [internal] load metadata for docker.io/library/python:3.11-slim
+#4 DONE 1.2s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 233B done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [builder 1/5] FROM 
+docker.io/library/python:3.11-slim@sha256:a3ab0b966bc4e91546a033e22093cb840908979487a9fc0e6e38295747e49ac0
+#7 resolve 
+docker.io/library/python:3.11-slim@sha256:a3ab0b966bc4e91546a033e22093cb840908979487a9fc0e6e38295747e49ac0 
+0.0s done
+#7 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 170B done
+#6 DONE 0.0s
+
+#8 [runtime 5/6] COPY src/ ./src/
+#8 CACHED
+
+#9 [builder 2/5] WORKDIR /build
+#9 CACHED
+
+#10 [builder 3/5] RUN python -m venv /opt/venv
+#10 CACHED
+
+#11 [builder 4/5] COPY requirements.txt .
+#11 CACHED
+
+#12 [builder 5/5] RUN /opt/venv/bin/pip install --no-cache-dir --upgrade pip     && /opt/venv/bin/pip 
+install --no-cache-dir -r requirements.txt
+#12 CACHED
+
+#13 [runtime 3/6] RUN addgroup --system appgroup     && adduser --system --ingroup appgroup --home /app 
+appuser
+#13 CACHED
+
+#14 [runtime 4/6] COPY --from=builder /opt/venv /opt/venv
+#14 CACHED
+
+#15 [runtime 2/6] WORKDIR /app
+#15 CACHED
+
+#16 [runtime 6/6] RUN chown -R appuser:appgroup /app
+#16 CACHED
+
+#17 exporting to image
+#17 exporting layers 0.0s done
+#17 exporting manifest sha256:e8ff95ee8c6c8d9f2abc315e70650f4f6ecab0d1edb1a65746292fb6a410a642 done
+#17 exporting config sha256:169169977646856ba43d661f558f2b43201962cd224c57db97d12dc8780dd5bf done
+#17 exporting attestation manifest sha256:a3c85511d0a858a8abe6c8426f08b6599d0fbd8878c6eb3531a2b7b968d83762 
+0.1s done
+#17 exporting manifest list sha256:8dc03be4d9f5fd88b9e8fa7a3f440f7ae7667d82368c3ba7673c2b5c10860867 0.0s 
+done
+#17 naming to docker.io/fit4110/iot-ingestion:lab04 done
+#17 unpacking to docker.io/fit4110/iot-ingestion:lab04 0.0s done
+#17 DONE 0.3s

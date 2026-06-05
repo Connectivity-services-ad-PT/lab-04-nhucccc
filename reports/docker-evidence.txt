@@ -1,0 +1,22 @@
+﻿=== Docker Evidence - Lab 04 ===
+Date: 2026-06-05 20:01:27
+Team: team-core (A6 - Core Business)
+
+=== docker images ===
+REPOSITORY              TAG                IMAGE ID       SIZE fit4110/iot-ingestion   lab04              8dc03be4d9f5   268MB fit4110/iot-ingestion   v0.1.0-team-core   8dc03be4d9f5   268MB
+
+=== docker ps ===
+NAMES               STATUS                   PORTS fit4110-iot-lab04   Up 5 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+
+=== GET /health ===
+{"status":"ok","service":"iot-ingestion","version":"0.4.0"}
+
+=== Non-root user check ===
+appuser
+
+=== Newman result summary ===
+11 requests | 19 assertions | 0 failures
+Functional: 4/4 pass
+Auth: 2/2 pass (real 401, not mock)
+Negative: 2/2 pass (422 ProblemDetails)
+Boundary: 3/3 pass (value=80 X-Warning, value=81 422)
