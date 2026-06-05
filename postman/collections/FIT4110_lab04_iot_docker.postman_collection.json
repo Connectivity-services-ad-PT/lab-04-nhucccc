@@ -479,6 +479,104 @@
           ]
         },
         {
+          "name": "POST boundary temperature -40 lower bound is accepted",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/readings",
+              "host": ["{{baseUrl}}"],
+              "path": ["readings"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_id\": \"ESP32-LAB-A01\",\n  \"metric\": \"temperature\",\n  \"value\": -40,\n  \"unit\": \"celsius\",\n  \"timestamp\": \"2026-05-13T08:30:00+07:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Lower boundary value -40 returns 201', function () { pm.response.to.have.status(201); });",
+                  "if (pm.environment.get('env') !== 'mock') {",
+                  "  pm.test('Lower boundary accepted and reading_id present', function () { const json = pm.response.json(); pm.expect(json).to.have.property('reading_id'); pm.expect(json.accepted).to.eql(true); });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST boundary temperature -41 below lower bound is rejected",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/readings",
+              "host": ["{{baseUrl}}"],
+              "path": ["readings"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"device_id\": \"ESP32-LAB-A01\",\n  \"metric\": \"temperature\",\n  \"value\": -41,\n  \"unit\": \"celsius\",\n  \"timestamp\": \"2026-05-13T08:30:00+07:00\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get('env') === 'mock') {",
+                  "  pm.test('Mock response is documented', function () { pm.expect([201, 400, 422]).to.include(pm.response.code); });",
+                  "} else {",
+                  "  pm.test('Below lower boundary -41 returns 422', function () { pm.response.to.have.status(422); });",
+                  "  pm.test('Error follows ProblemDetails', function () { const json = pm.response.json(); pm.expect(json).to.have.property('type'); pm.expect(json).to.have.property('status'); pm.expect(json.status).to.be.within(400, 599); pm.expect(json).to.have.property('detail'); });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET reading not found returns 404 ProblemDetails",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/readings/R-00000000-0000",
+              "host": ["{{baseUrl}}"],
+              "path": ["readings", "R-00000000-0000"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.environment.get('env') !== 'mock') {",
+                  "  pm.test('Non-existent reading returns 404', function () { pm.response.to.have.status(404); });",
+                  "  pm.test('404 follows ProblemDetails', function () { const json = pm.response.json(); pm.expect(json).to.have.property('type'); pm.expect(json).to.have.property('status', 404); pm.expect(json).to.have.property('detail'); });",
+                  "} else {",
+                  "  pm.test('Mock response documented', function () { pm.expect([200, 404]).to.include(pm.response.code); });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "GET health responds under 1000ms on local/container",
           "request": {
             "method": "GET",

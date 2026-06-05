@@ -1,12 +1,12 @@
 ﻿=== Docker Evidence - Lab 04 ===
-Date: 2026-06-05 20:01:27
+Date: 2026-06-05 20:46:27
 Team: team-core (A6 - Core Business)
 
 === docker images ===
 REPOSITORY              TAG                IMAGE ID       SIZE fit4110/iot-ingestion   lab04              8dc03be4d9f5   268MB fit4110/iot-ingestion   v0.1.0-team-core   8dc03be4d9f5   268MB
 
 === docker ps ===
-NAMES               STATUS                   PORTS fit4110-iot-lab04   Up 5 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+NAMES               STATUS                    PORTS fit4110-iot-lab04   Up 50 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
 
 === GET /health ===
 {"status":"ok","service":"iot-ingestion","version":"0.4.0"}
@@ -14,9 +14,17 @@ NAMES               STATUS                   PORTS fit4110-iot-lab04   Up 5 minu
 === Non-root user check ===
 appuser
 
+=== Image tags ===
+fit4110/iot-ingestion:lab04
+fit4110/iot-ingestion:v0.1.0-team-core
+ghcr.io/connectivity-services-ad-pt/lab-04-nhucccc:v0.1.0-team-core (tagged locally)
+
 === Newman result summary ===
-11 requests | 19 assertions | 0 failures
-Functional: 4/4 pass
-Auth: 2/2 pass (real 401, not mock)
-Negative: 2/2 pass (422 ProblemDetails)
-Boundary: 3/3 pass (value=80 X-Warning, value=81 422)
+14 requests | 25 assertions | 0 failures
+Functional:         4/4  pass (GET /health, POST /readings, GET /readings/latest, GET /readings/{id})
+Auth:               2/2  pass (missing token -> 401 ProblemDetails, wrong token -> 401 ProblemDetails)
+Negative:           2/2  pass (missing field -> 422, wrong type -> 422)
+Boundary upper:     2/2  pass (value=80 -> 201 + X-Warning, value=81 -> 422 ProblemDetails)
+Boundary lower:     2/2  pass (value=-40 -> 201, value=-41 -> 422 ProblemDetails)
+Negative 404:       1/1  pass (non-existent reading -> 404 ProblemDetails)
+Reliability:        1/1  pass (response time < 1000ms)
